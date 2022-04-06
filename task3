@@ -1,0 +1,80 @@
+<?php
+if($_SERVER['REQUEST_METHOD'] == "POST"){
+
+    # Form inputs
+   $name = $_POST['name'];
+   $email = $_POST['email'];
+   $password = $_POST['password'];
+   $address  = $_POST['address'];
+   $linkedin = $_POST['linkedinUrl'];
+  $errors = []; 
+
+  # Validate NAME 
+  if(empty($name)){
+
+    $errors['name']  = "Name is required!"; 
+  } 
+  elseif(!is_string($name)){
+        $errors['name']  = "Name must be string"; 
+    }
+  
+
+  # VALIDATE EMAIL 
+  if(empty($email)){
+
+    $errors['email']  = "Required"; 
+  } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $errors['email'] = "Invalid email format";
+  }
+
+
+    # VALIDATE password 
+    if(empty($password)){
+        $errors['password']  = "Required"; 
+      }elseif (strlen((string)$password)<6) {
+        $errors['password'] = "Minimum is 6 charachters";
+      }
+  # Validate address
+
+    if(empty($address)){
+        $errors['address']  = "Required"; 
+      
+    }elseif (strlen($address)<10) {
+        $errors['address'] = "Minimum is 10 charachters";
+      }
+      # Validate Linkedin URL
+
+    if(empty($linkedin)){
+        $errors['linkedinUrl']  = "Required"; 
+      
+    }elseif (strpos($linkedin,'linkedin.com') == false){
+        $errors['linkedinUrl'] = "Must contain linkedin.com";
+      }
+
+    # Check ERRORS 
+     if(count($errors) > 0 ){
+
+        foreach($errors as $key => $value){
+            echo '- '.$key.' : '.$value.'<br>'.'<br>';  
+        }
+
+     }else{
+         echo 'Succefully Registered';
+     } 
+  }
+?>
+<form action="<?php echo $_SERVER['PHP_SELF'];?>"   method="post"">
+<label>Information Form</label>
+<br><br>
+<label>Name: <input type="text" name="name"></label>
+<br><br>
+<label>Email: <input type="text" name="email"></label>
+<br><br>
+<label>Password: <input type="password" name="password"></label>
+<br><br>
+<label>Address: <input type="text" name="address"></label>
+<br><br>
+<label>Linkedin: <input type="text" name="linkedinUrl"></label>
+<br><br><br>
+<input type="submit" value="Submit" onclick="validation()" formtarget="_blank">
+</form>
